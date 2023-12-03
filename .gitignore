@@ -1,6 +1,5 @@
 # Manim specefic files
-*.mp4
-partial_movie_file_list.txt
+media/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
