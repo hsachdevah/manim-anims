@@ -30,7 +30,7 @@ class MovingAngle(Scene):
     def construct(self):
         rotation_center = RIGHT
 
-        theta_tracker = ValueTracker(110)
+        theta_tracker = ValueTracker(10)
         line1 = Line(LEFT, RIGHT)
         dot1 = Dot(point=line1.get_end())
         line_moving = Line(LEFT, RIGHT).set_color(RED)
@@ -46,7 +46,7 @@ class MovingAngle(Scene):
         #     ).point_from_proportion(0.5)
         # )
 
-        self.add(dot1, dot2, line1, line_moving)
+        self.add(dot1, line1, line_moving)
         self.wait()
 
         line_moving.add_updater(
@@ -79,3 +79,54 @@ class MovingDots(Scene):
         self.play(x.animate.set_value(5))
         self.play(y.animate.set_value(4))
         self.wait()
+
+
+class anim1(Scene):
+    def construct(self):
+        path = VMobject()
+        line1 = Line(ORIGIN, RIGHT*2).set_color(ORANGE)
+        line1_ref = line1.copy()
+        
+        numberplane = NumberPlane()
+        
+
+        # Create Line, Rotate it at origin
+        theta1_tracker = ValueTracker(0)
+        theta2_tracker = ValueTracker(0)
+    
+        # line1.rotate(
+        #     theta1_tracker.get_value() * DEGREES, about_point= line1.get_start()
+        # )
+
+        line1.add_updater(
+            lambda x: x.become(line1_ref.copy()).rotate(
+                theta1_tracker.get_value() * DEGREES, about_point=line1.get_start()
+            )
+        )
+
+        # Draw dot
+        # dot = Dot(point=line1.get_end())
+        dot = always_redraw(
+                lambda: Dot(point=line1.get_end())
+            )
+        path.set_points_as_corners([dot.get_center(), dot.get_center()])
+
+        # Draw line2
+        line2 = always_redraw(
+            lambda: Line(
+                line1.get_end(), 
+                line1.get_end() + UP, 
+                color=BLUE
+            )
+        )
+
+        def update_path(path):
+            previous_path = path.copy()
+            previous_path.add_points_as_corners([dot.get_center()])
+            path.become(previous_path)
+        path.add_updater(update_path)
+        dot.add_updater(update_path)
+        
+        self.add(path, line1,line2,dot)
+        # self.play(dot.animate.shift(UP)) #animate dot
+        self.play(theta1_tracker.animate.set_value(340),rate_func=rate_functions.linear,run_time=4) #animate line
