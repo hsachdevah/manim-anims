@@ -93,7 +93,7 @@ class anim1(Scene):
         line2 = always_redraw(
             lambda: Line(
                 line1.get_end(), 
-                line1.get_end() + UP, 
+                line1.get_end() + UP*1.33, 
                 color=BLUE
             )
         )
@@ -119,4 +119,4 @@ class anim1(Scene):
         
         self.add(path, line1,line2,dot)
         # self.play(dot.animate.shift(UP)) #animate dot
-        self.play(theta1_tracker.animate.set_value(360),rate_func=rate_functions.linear,run_time=60) #animate line
+        self.play(theta1_tracker.animate.set_value(370),rate_func=rate_functions.linear,run_time=20) #animate line
