@@ -9,5 +9,5 @@ pip install -r requirements.txt
 ```
 
 ```
-python -m manim -pql anim1.py PointWithTrace
+python -m manim -qh anim1.py anim1
 ```

@@ -65,21 +65,6 @@ class MovingAngle(Scene):
         self.play(theta_tracker.animate.set_value(350))
 
 
-class MovingDots(Scene):
-    def construct(self):
-        d1,d2=Dot(color=BLUE),Dot(color=GREEN)
-        dg=VGroup(d1,d2).arrange(RIGHT,buff=1)
-        l1=Line(d1.get_center(),d2.get_center()).set_color(RED)
-        x=ValueTracker(0)
-        y=ValueTracker(0)
-        d1.add_updater(lambda z: z.set_x(x.get_value()))
-        d2.add_updater(lambda z: z.set_y(y.get_value()))
-        l1.add_updater(lambda z: z.become(Line(d1.get_center(),d2.get_center())))
-        self.add(d1,d2,l1)
-        self.play(x.animate.set_value(5))
-        self.play(y.animate.set_value(4))
-        self.wait()
-
 
 class anim1(Scene):
     def construct(self):
@@ -104,13 +89,6 @@ class anim1(Scene):
             )
         )
 
-        # Draw dot
-        # dot = Dot(point=line1.get_end())
-        dot = always_redraw(
-                lambda: Dot(point=line1.get_end())
-            )
-        path.set_points_as_corners([dot.get_center(), dot.get_center()])
-
         # Draw line2
         line2 = always_redraw(
             lambda: Line(
@@ -120,6 +98,18 @@ class anim1(Scene):
             )
         )
 
+        line2.add_updater(
+            lambda x: x.become(line2.copy()).rotate(
+                theta1_tracker.get_value() * 20 * DEGREES, about_point=line1.get_end()
+            )
+        )
+
+        # Draw dot
+        # dot = Dot(point=line1.get_end())
+        dot = always_redraw(
+                lambda: Dot(point=line2.get_end())
+            )
+        path.set_points_as_corners([dot.get_center(), dot.get_center()])
         def update_path(path):
             previous_path = path.copy()
             previous_path.add_points_as_corners([dot.get_center()])
@@ -129,4 +119,4 @@ class anim1(Scene):
         
         self.add(path, line1,line2,dot)
         # self.play(dot.animate.shift(UP)) #animate dot
-        self.play(theta1_tracker.animate.set_value(340),rate_func=rate_functions.linear,run_time=4) #animate line
+        self.play(theta1_tracker.animate.set_value(1340),rate_func=rate_functions.linear,run_time=60) #animate line
