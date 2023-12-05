@@ -119,4 +119,4 @@ class anim1(Scene):
         
         self.add(path, line1,line2,dot)
         # self.play(dot.animate.shift(UP)) #animate dot
-        self.play(theta1_tracker.animate.set_value(1340),rate_func=rate_functions.linear,run_time=60) #animate line
+        self.play(theta1_tracker.animate.set_value(360),rate_func=rate_functions.linear,run_time=60) #animate line
